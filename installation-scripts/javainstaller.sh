@@ -76,7 +76,6 @@ if [[ "$JAVA_CHECK" == *"Java(TM) SE Runtime Environment"* ]]; then
    echo
    java -version
    echo
-   exit 0
 else
    echo "FAILED"
    echo
