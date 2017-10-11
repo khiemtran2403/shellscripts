@@ -1,13 +1,16 @@
 #!/bin/bash
+
 export DEBIAN_FRONTEND=noninteractive
 
-MYSQL_ROOT_PASSWORD='root' 
+MYSQL_ROOT_PASSWORD='root'
 
 # Install MySQL
 echo debconf mysql-server/root_password password $MYSQL_ROOT_PASSWORD | sudo debconf-set-selections
 echo debconf mysql-server/root_password_again password $MYSQL_ROOT_PASSWORD | sudo debconf-set-selections
 #sudo debconf-set-selections <<< "mysql-server-5.7 mysql-server/root_password password $MYSQL_ROOT_PASSWORD"
 #sudo debconf-set-selections <<< "mysql-server-5.7 mysql-server/root_password_again password $MYSQL_ROOT_PASSWORD"
+
+sudo apt-get update
 sudo apt-get -qq install mysql-server > /dev/null # Install MySQL quietly
 
 # Install Expect
@@ -51,10 +54,11 @@ sudo expect ~/secure_our_mysql.sh
 rm -v ~/secure_our_mysql.sh # Remove the generated Expect script
 #sudo apt-get -qq purge expect > /dev/null # Uninstall Expect, commented out in case you need Expect
 
-sed -i 's/127\.0\.0\.1/0\.0\.0\.0/g' /etc/mysql/mysql.conf.d/mysqld.cnf
+sudo sed -i 's/127\.0\.0\.1/0\.0\.0\.0/g' /etc/mysql/mysql.conf.d/mysqld.cnf
 
-service mysql restart
+sudo service mysql restart
 
 echo "MySQL setup completed"
 
 exit 0
+             
